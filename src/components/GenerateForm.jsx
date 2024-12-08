@@ -1,25 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import axios from "axios";
 
 const GenerateForm = () => {
-  const [text, setText] = useState('Create a humorous post about AI replacing jobs for a Twitter audience.');
-  const [keywords, setKeywords] = useState('chatgpt, openai, facebook');
+  const [text, setText] = useState(""); // Store input text
+  const [loading, setLoading] = useState(false); // Track loading state
+  const [error, setError] = useState(""); // Track error state
+  const [generatedContent, setGeneratedContent] = useState(""); // Store generated content
 
-  // Handle textarea input change
+  // Function to handle the text input change
   const handleTextChange = (e) => {
     setText(e.target.value);
   };
 
-  // Handle keywords input change
-  const handleKeywordsChange = (e) => {
-    setKeywords(e.target.value);
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!text) return; // If no text input, prevent form submission
+
+    setLoading(true); // Set loading state to true when request is sent
+    setError(""); // Clear any previous error messages
+
+    try {
+      // Send POST request to backend to generate content
+      const response = await axios.post("http://localhost:8000/fetchNews", { query: text });
+      setGeneratedContent(response.data.articles);
+    } catch (err) {
+      console.error("Error fetching data from the backend:", err);
+      setError("Failed to generate content. Please try again.");
+    } finally {
+      setLoading(false); // Set loading to false after request completes
+    }
   };
 
   return (
-    <form action="" className="">
+    <form action="" className="generate-form" onSubmit={handleSubmit}>
       <div className="row gy-4 gx-4">
+        {/* Textarea for user input */}
         <div className="col-12">
           <div className="form-group">
-            <label className="form-label" ><b className='textlabel'>What do you want to generate?</b></label>
+            <label className="form-label">
+              <b className="textlabel">What do you want to generate?</b>
+            </label>
             <div className="form-control-wrap">
               <textarea
                 cols="55"
@@ -27,6 +48,8 @@ const GenerateForm = () => {
                 className="form-control"
                 value={text}
                 onChange={handleTextChange}
+                maxLength="500"
+                placeholder="Enter your query here..."
               />
             </div>
             <div className="form-note d-flex justify-content-end">
@@ -34,28 +57,39 @@ const GenerateForm = () => {
             </div>
           </div>
         </div>
-        {/* <div className="col-12">
-          <div className="form-group">
-            <label htmlFor="PrimaryKeywords" className="form-label">Primary Keywords</label>
-            <div className="form-control-wrap">
-              <input
-                id="PrimaryKeywords"
-                type="text"
-                className="form-control"
-                value={keywords}
-                onChange={handleKeywordsChange}
-              />
-            </div>
-            <div className="form-note d-flex justify-content-between">
-              <span>Separated with a comma</span>
-              <span>{`${keywords.split(',').length}/10`}</span>
-            </div>
-          </div>
-        </div> */}
+
+        {/* Submit Button */}
         <div className="col-12">
-          <button type="submit" className="btn btn-primary w-100 btnColor">Generate</button>
+          <button type="submit" className="btn btn-primary w-100 btnColor">
+            {loading ? "Generating..." : "Generate"}
+          </button>
         </div>
       </div>
+
+      {/* Error handling */}
+      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
+
+      {/* Display generated content */}
+      {generatedContent && (
+        <div>
+          <h3>Generated Content:</h3>
+          <ul>
+            {generatedContent.length > 0 ? (
+              generatedContent.map((article, index) => (
+                <li key={index}>
+                  <h4>{article.title}</h4>
+                  <p>{article.description}</p>
+                  <a href={article.url} target="_blank" rel="noopener noreferrer">
+                    Read more
+                  </a>
+                </li>
+              ))
+            ) : (
+              <p>No content generated. Please try again.</p>
+            )}
+          </ul>
+        </div>
+      )}
     </form>
   );
 };
