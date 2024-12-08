@@ -40,14 +40,14 @@ function App() {
                 <nav className="nk-header-menu nk-menu">
                   <ul className="nk-menu-list mx-auto">
                     <li className="nk-menu-item has-dropdown">
-                      <a href="#" className="nk-menu-link">
+                      {/* <a href="#" className="nk-menu-link">
                         <span className="nk-menu-text">Home</span>
-                      </a>
+                      </a> */}
                     </li>
                     <li className="nk-menu-item">
-                      <a href="about.jsx" className="nk-menu-link">
+                      {/* <a href="about.jsx" className="nk-menu-link">
                         <span className="nk-menu-text">About Us</span>
-                      </a>
+                      </a> */}
                     </li>
                   </ul>
                 </nav>

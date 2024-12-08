@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { PacmanLoader } from "react-spinners";
+import { FaMicrophone, FaUserPlus, FaUserMinus, FaFileAudio, FaInfoCircle, FaArrowUp } from "react-icons/fa";
+
 
 const GenerateForm = () => {
   const [text, setText] = useState(""); // Store input text
@@ -11,6 +14,7 @@ const GenerateForm = () => {
   const handleTextChange = (e) => {
     setText(e.target.value);
   };
+
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -61,13 +65,23 @@ const GenerateForm = () => {
         {/* Submit Button */}
         <div className="col-12">
           <button type="submit" className="btn btn-primary w-100 btnColor">
-            {loading ? "Generating..." : "Generate"}
+          {loading ? (
+                <>
+                  <PacmanLoader size={18} color="#FFFFFF" />
+                  <span className="ml-2"></span>
+                </>
+              ) : (
+                <>
+                  <FaArrowUp className="mr-2" />
+                  Process Query
+                </>
+              )}
           </button>
         </div>
       </div>
 
       {/* Error handling */}
-      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
+      {error && <p style={{ color: "#0066b2", textAlign: "center" }}>{error}</p>}
 
       {/* Display generated content */}
       {generatedContent && (
@@ -77,8 +91,9 @@ const GenerateForm = () => {
             {generatedContent.length > 0 ? (
               generatedContent.map((article, index) => (
                 <li key={index}>
-                  <h4>{article.title}</h4>
+                  <h4 className="gentitle">{article.title}</h4>
                   <p>{article.description}</p>
+                  
                   <a href={article.url} target="_blank" rel="noopener noreferrer">
                     Read more
                   </a>
@@ -91,6 +106,7 @@ const GenerateForm = () => {
         </div>
       )}
     </form>
+    
   );
 };
 
