@@ -87,13 +87,19 @@ const GenerateForm = () => {
       {generatedContent && (
         <div>
           <h3>Generated Content:</h3>
+          
           <ul>
             {generatedContent.length > 0 ? (
               generatedContent.map((article, index) => (
                 <li key={index}>
                   <h4 className="gentitle">{article.title}</h4>
                   <p>{article.description}</p>
-                  
+                  <button
+                    type="button"
+                    className="btn btn-transparent"
+                  >Show Image
+                    {/* {showImage ? "Hide Image" : "Show Image"} */}
+                  </button>
                   <a href={article.url} target="_blank" rel="noopener noreferrer">
                     Read more
                   </a>

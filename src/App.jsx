@@ -16,16 +16,16 @@ function App() {
                     <div className="logo-wrap">
                       <img
                         className="logo-img logo-light"
-                        src="./mindmatrix_.png"
+                        src="./newsswift.png"
                         alt=""
                       />
                       <img
                         className="logo-img logo-dark"
-                        src="./mindmatrix_.png"
+                        src="./newsswift.png"
                         alt=""
                       />
                     </div>
-                    <h3 className="logo-text">MindMatrix</h3>
+                    <h3 className="logo-text">NewsSwift</h3>
                   </a>
                 </div>
                 <div className="nk-header-toggle">
